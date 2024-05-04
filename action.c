@@ -1,3 +1,8 @@
+#include "stack.h"
+#include <stdlib.h>
+#include <stab.h>
+
+
 /*
 
 
@@ -19,3 +24,8 @@ pheromone free. If the locations are free then Michael feels another kind of itc
 
 
 */
+
+//stack follow the logic FILO
+
+
+

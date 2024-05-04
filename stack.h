@@ -7,8 +7,8 @@ typedef struct {
 //methods
 stack* create_stack(int size);
 void push(int x , int y);
-int pop();
-int peek();
+stack* pop();
+stack* peek();
 void clear();
 int is_StackFull();
 int is_StackEmpty();

@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stab.h>
+#include <stdio.h>
 #include "stack.h"
 
 //init pointer for stack memory
@@ -23,18 +24,14 @@ stack* create_stack(int size)
     }
     return curr;
 }
-
-//stack follow the logic FILO
 int is_StackFull()
 {
     return curr->rear == max ? 1 : 0; 
 }
-//
 int is_StackEmpty()
 {
     return curr -> rear == curr -> front ? 1 : 0;
 }
-
 void push(int x , int y)
 {
     if(!is_StackFull())
@@ -48,16 +45,34 @@ void push(int x , int y)
         printf("the stack is currently empty");
     }
 }
-int pop()
+
+stack* pop()
 {
+    stack* d = NULL;
     if(!is_StackEmpty())
     {
-        
+        curr->rear--; // decrease the rear pointer first
+        d = &curr[curr->rear]; // get the top element
+        free(&curr[curr->rear]);
     }
-
+    else
+    {
+        printf("the stack is currently empty. ");
+    }
+    return d;
 }
-int peek()
+
+
+
+
+
+stack* peek()
 {
-
+    return curr;
 }
-void clear();
+
+void clear()
+{
+    free(curr);
+}
+
