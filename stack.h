@@ -1,6 +1,7 @@
 //define memory storing type
 typedef struct {
     int front, rear;
+    int x, y;
 }stack;
 
 //methods
@@ -10,6 +11,6 @@ int pop();
 int peek();
 void clear();
 int is_StackFull();
-int is_Stackempty();
+int is_StackEmpty();
 
 
