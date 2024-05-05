@@ -158,13 +158,16 @@ int main() {
         switch(direction)
         {
             case 'v': 
-            current = BACKTRACK(x, y);
+            current = BACKTRACK(&x, &y);
             if(current == NULL)
             {
                 exit(1);
             }
-            x = current->x;
-            y = current->y;
+            else
+    {
+        x = current->x;
+        y = current->y;
+    }
             break;
             case 'b': 
             move_F(&x);
@@ -199,8 +202,42 @@ int main() {
                 }
             }
             break;
-            
-        }        
+            case 'r': 
+            move_R(&y);
+            if(check_surroundings(maze,x,y) != 'v')
+            {
+                CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                printf("\n%c\n", check_surroundings(maze,x,y));
+                printf("\n%d %d\n", x, y);
+
+                if(check_surroundings(maze,x,y) != 'v')
+                {
+                    printf("\n%d %d\n", x, y);
+                    BJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                    printf("\n%c\n", check_surroundings(maze,x,y));
+                    printf("\n%d %d\n", x, y);
+                }
+            }
+            break;
+            case 'l':
+            move_L(&y);
+            if(check_surroundings(maze,x,y) != 'v')
+            {
+                CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                printf("\n%c\n", check_surroundings(maze,x,y));
+                printf("\n%d %d\n", x, y);
+
+                if(check_surroundings(maze,x,y) != 'v')
+                {
+                    printf("\n%d %d\n", x, y);
+                    BJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                    printf("\n%c\n", check_surroundings(maze,x,y));
+                    printf("\n%d %d\n", x, y);
+                }
+            }
+            break;
+        }   
+        break;     
     }
 
     for (int i = 0; i < rows; i++) {

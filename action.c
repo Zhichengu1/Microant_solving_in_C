@@ -1,6 +1,5 @@
 #include "stack.h"
 #include <stdlib.h>
-#include <stab.h>
 #include <stdio.h>
 #include "action.h"
 int max = 0;
@@ -226,20 +225,23 @@ void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
     MARK(maze,(*x),(*y));
 }
 
-stack* BACKTRACK(int x, int y)
+stack* BACKTRACK(int* x, int* y)
 {
     stack* c = peek();
-    while(c -> x != x && c -> y != y && !(is_StackEmpty()))
+    while(c -> x != *x && c -> y != *y && !(is_StackEmpty()))
     {
         c = pop();
     }
     if(is_StackEmpty())
     {
+        printf("The starting position is a dead end");
         return NULL;
-        printf("The starting psoition is a dead end");
     }
+    *x = c->x;
+    *y = c->y;
     return c;
 }
+
 
 void repeat_function(int n, void (*f)())
 {

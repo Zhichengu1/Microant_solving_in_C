@@ -9,5 +9,5 @@ int CWF(int** maze, int x, int y);
 int CWB(int** maze, int x, int y);
 void BJPI(int** maze, int* x, int* y, int max_col, int max_row, char direction);
 void CJPI(int** maze, int* x, int* y, int max_col, int max_row, char direction);
-stack* BACKTRACK(int x, int y);
+stack* BACKTRACK(int* x, int* y);
 void repeat_function(int n, void (*f)());
