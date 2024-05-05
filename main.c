@@ -3,6 +3,8 @@
 #include "stack.h"
 #include <stdlib.h>
 #include <string.h>
+#include "action.h"
+
 
 void copyMazeFromFile(int ***maze, int *rows, int *cols, char *filename) {
     FILE *file = fopen(filename, "r");
@@ -41,7 +43,8 @@ void copyMazeFromFile(int ***maze, int *rows, int *cols, char *filename) {
         for (int j = 0; j < *cols; j++) {
             if (line[j] == '*') {
                 (*maze)[i][j] = 1; // '*' represents a wall
-            } else {
+            } 
+            else {
                 (*maze)[i][j] = 0; // Other characters represent empty spaces
             }
         }
@@ -57,7 +60,11 @@ void printMaze(int **maze, int rows, int cols) {
         for (int j = 0; j < cols; j++) {
             if (maze[i][j] == 1) {
                 printf("*"); // Print '*' for walls
-            } else {
+            } 
+            else if(maze[i][j] == 2){
+                printf("x"); // Print '*' for walls
+            }
+            else {
                 printf(" "); // Print ' ' for empty spaces
             }
         }
@@ -72,6 +79,7 @@ int main() {
     char filename[100]; // Maximum filename length
 
 
+
     printf("Enter the name of the maze file: ");
     fgets(filename, sizeof(filename), stdin);
     filename[strcspn(filename, "\n")] = '\0'; // Remove newline character if present
@@ -80,11 +88,37 @@ int main() {
     // // Copy maze from file
     copyMazeFromFile(&maze, &rows, &cols, filename);
 
+    MARK(maze, 0, 4);
+    printf("\n %d \n", maze[0][4]);
 
+        int i = 0;
+        int j = 4;
+        int* po = &i;
+        int* p = &j;
+        move_F(po);   
+        MARK(maze, i, j); 
+        printf("\n %d, %d, %d \n", i, j, maze[i][j]);
+        printf("\n the space toward left %d \n\n", CWL(maze, i, j));
+        printf("\n the space toward right %d \n\n", CWR(maze, i, j, cols));
+        printf("\n the space toward Front %d \n\n", CWF(maze, i, j));
+        printf("\n the space toward Back %d \n\n", CWB(maze, i, j, rows));
+        int *p1 = &i;
+        int *p2 = &j;
+        CJPI(maze, p1, p2, rows, cols,'b');
+        printf("\n the space toward new Back %d %d \n\n", i, j);
+//        BJPI(maze, p1, p2, rows, cols,'b');
+
+    for (int i = 0; i < rows; i++) {
+        for (int j = 0; j < cols; j++) {
+            printf(" %d ", maze[i][j]);
+        }
+        printf("\n");
+  }
+   
+    printf("\n\n this %c \n\n", maze[0][4]);
     // // Print the maze
     printf("Rows: %d, Columns: %d\n", rows, cols);
     printMaze(maze, rows, cols);
-
 
     //Free allocated memory
     for (int i = 0; i < rows; i++) {

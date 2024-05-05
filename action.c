@@ -1,78 +1,242 @@
 #include "stack.h"
 #include <stdlib.h>
 #include <stab.h>
+#include <stdio.h>
+#include "action.h"
 
+int max;
+stack* curr;
 
-/*
-
-
-MARK – the ant marks its current position using a chemical called pheromone.
-2. MOVE_F – moves the VA from the current position one position forward. If Michael
-locates at coordinates (x, y), it will move to (x + 1, y).
-3. MOVE_B – moves the virtual ant from the current position one position backward. If
-Michael locates at coordinates (x, y), it will move to (x - 1, y).
-4. MOVE_L – moves the virtual ant from the current position one position left. If Michael
-locates at coordinates (x, y), it will move to (x, y - 1).
-5. MOVE_R – moves the virtual ant from the current position one position right. If Michael
-locates at coordinates (x, y), it will move to (x, y + 1).
-6. CWL – Michael checks if the next locations to the left (until meeting a wall) are pheromone
-free. If the locations are free then Michael feels an itch. Otherwise, if no location is free
-(e.g., because there is a pheromone mark or a wall on the left of Michael), then Michael
-does not feel the itch.
-7. CWR – Michael checks if the next locations to the right (until meeting a wall) are
-pheromone free. If the locations are free then Michael feels another kind of itch.
-
-
-*/
-
-//stack follow the logic FILO
-
-//mark -> kevin
-
-/*
-void MARK(int** Maze[][], int x, int y);
+stack* create_stack(int size)
 {
-    if (MAZE[x][y] == 'x' || MAZE[X]{Y} == '*')
+    if(size > 0)
     {
-        printf("Value cannot be printed here");
+        curr = (stack*) malloc(sizeof(curr) * size);
+        curr->front = 0;
+        curr->rear = 0;
+        max = size;
     }
     else
     {
-        MAZE[x][y] = 'x'
+        curr = NULL;
+        printf("The stack memory is empty");
+    }
+    return curr;
+}
+
+//mark -> kevin
+void MARK(int** Maze, int x, int y) 
+{
+    if (Maze[x][y] == 0)
+    {
+        push(x,y);
+        Maze[x][y] = 2;
+    }
+    else
+    {
+        printf("\ncannot enter here\n");
     }
 }
-*/
-
 
 // move F, B, L, R
+void move_F(int *x) {
+    *x += 1;
+}
+void move_B(int *x) {
+    *x -= 1;
+}
+void move_L(int *y) {
+    *y -= 1;
+}
+void move_R(int *y) {
+    *y += 1;
+}
+
+//CWL check left
+int CWL(int **maze, int row, int col)
+{
+    if(col == 0)
+    {
+        printf("the current col is 0");
+    }
+    return col > 0 && maze[row][col-1] != 1 && maze[row][col-1] != 2 ? 1 : 0;
+}
+
+//CWR check right until it reaches a wall
+int CWR(int** maze, int x, int y, int max_col)
+{
+    return y < max_col && maze[x][y+1] != 1 && maze[x][y+1] != 2 ? 1 : 0;  
+}
+
+//CWF check front
+int CWF(int** maze, int x, int y)
+{
+    return x > 0 && maze[x-1][y] != 1 && maze[x-1][y] != 2 ? 1 : 0;
+}
+
+//CWB check back
+int CWB(int** maze, int x, int y, int max_row)
+{
+    return x < max_row && maze[x+1][y] != 1 && maze[x+1][y] != 2 ? 1 : 0;
+}
+
+//actions
+int is_StackFull()
+{
+    return curr->rear == max ? 1 : 0; 
+}
+int is_StackEmpty()
+{
+    return curr -> rear == curr -> front ? 1 : 0;
+}
+void push(int x , int y)
+{
+    if(!is_StackFull())
+    {
+        curr[curr->rear].x = x;
+        curr[curr->rear].y = y;
+        curr->rear++;
+    }
+    else
+    {
+        printf("the stack is currently full");
+    }
+}
 
 
-//CWL
+stack* pop()
+{
+    stack* d = NULL;
+    if(!is_StackEmpty())
+    {
+        curr->rear--; // decrease the rear pointer first
+        d = &curr[curr->rear]; // get the top element
+        free(&curr[curr->rear]);
+    }
+    else
+    {
+        printf("the stack is currently empty. ");
+    }
+    return d;
+}
+
+stack* peek()
+{
+    return &curr[curr->rear-1];
+}
+
+void clear()
+{
+    free(curr);
+}
+
+//current position is free
+void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
+{
+    switch(direction)
+    {
+        case 'r': 
+        {
+            while (!(is_StackFull())&& *y < max_col && maze[*x][*y+1] != 1 && maze[*x][*y+1] != 2)
+            {
+                (*y)++;
+                push((*x),(*y));
+            }
+        }
+        break;
+
+        case 'l':
+        {
+            while (!(is_StackFull()) && *x > 0 && maze[*x][*y-1] != 1 && maze[*x][*y-1] != 2)
+            {
+                (*y)--;
+                push((*x),(*y));
+            }
+        }
+        break;
+        case 'f': 
+        {
+            while(!(is_StackFull()) && x > 0 && maze[*x-1][*y] != 1 && maze[*x-1][*y] != 2)
+            {
+                (*x)--;
+                push((*x),(*y));
+            }
+        }
+        case 'b':
+        {
+            while(!(is_StackFull()) && *x < max_row && maze[*x+1][*y] != 1 && maze[*x+1][*y] != 2)
+            {
+                (*x)++;
+                push((*x),(*y));
+            }
+        }
+        break;
+    }
+}
+
+void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
+{
+    switch(direction)
+    {
+        case 'r': 
+            if (maze[*x][*y+1] != 1 && maze[*x][*y+1] != 2)
+            {
+                move_R(y);
+            }
+            break;
+
+        case 'l':
+            if (*y > 0 && maze[*x][*y-1] != 1 && maze[*x][*y-1] != 2)
+            {
+                move_L(y);
+            }
+            break;
+
+        case 'f':
+            if (*x > 0 && maze[*x-1][*y] != 1 && maze[*x-1][*y] != 2)
+            {
+                move_B(x);
+            }
+            break;
+
+        case 'b':
+            if (maze[*x+1][*y] != 1 && maze[*x+1][*y] != 2)
+            {
+                move_F(x);
+            }
+            break;
+    }
+      if(!is_StackFull())
+      {
+        push((*x),(*y));
+        }
+}
 
 
-/*
-Michael checks if the next locations to the left (until meeting a wall) are pheromone
-free. If the locations are free then Michael feels an itch. Otherwise, if no location is free
-(e.g., because there is a pheromone mark or a wall on the left of Michael), then Michael
-does not feel the itch
-*/
+stack* BACKTRACK(int x, int y)
+{
+    stack* c = peek();
+    while(c -> x != x && c -> y != y && !(is_StackEmpty()))
+    {
+        c = pop();
+    }
+    return c;
+}
+
+void repeat_function(int n, void (*f)())
+{
+    for(int i = 0; i < n; i++)
+    {
+        f();
+    }
+}
 
 
 
-/*
 
-BJPI (Bold jump for itching) – jump x position along the direction for which Michael felt
-an itch (left, right, forward, backward). For example, after performing CWR, Michael felt
-an itch because the direction to the right of the current position was free. Then it decided
-to act using BJPI, meaning that it jumped x positions to the right, as the itching was felt
-after Michael checked the locations to the right of its current position. The number of
-positions over which it jumped is found by after using the corresponding CWL, CWR, CWF,
-CWB action. For example, if the next 4 locations to the left of the current position are
-free, then x is 4 after executing CWL. If x is zero after executing action CWL, but the ant
-still executes action BJPI, then Michael stays in its current position. Every BJPI stops the
-corresponding itching of the ant, e.g., the itching type that triggered the jump.
 
-*/
+
+
 
 
 

@@ -3,7 +3,6 @@ typedef struct {
     int front, rear;
     int x, y;
 }stack;
-
 //methods
 stack* create_stack(int size);
 void push(int x , int y);

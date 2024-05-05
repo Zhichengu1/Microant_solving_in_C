@@ -47,7 +47,6 @@ void push(int x , int y)
         printf("the stack is currently empty");
     }
 }
-
 stack* pop()
 {
     stack* d = NULL;

@@ -1,0 +1,11 @@
+void MARK(int** Maze, int x, int y);
+void move_F( int *x);
+void move_B(int *x);
+void move_L(int *y);
+void move_R(int *y);
+int CWL(int **maze, int x, int y);
+int CWR(int** maze, int x, int y, int max_col);
+int CWF(int** maze, int x, int y);
+int CWB(int** maze, int x, int y, int max_row);
+void BJPI(int** maze, int* x, int* y, int max_col, int max_row, char direction);
+void CJPI(int** maze, int* x, int* y, int max_col, int max_row, char direction);
