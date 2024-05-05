@@ -24,6 +24,8 @@ stack* create_stack(int size)
     }
     return curr;
 }
+
+//actions
 int is_StackFull()
 {
     return curr->rear == max ? 1 : 0; 
@@ -62,13 +64,9 @@ stack* pop()
     return d;
 }
 
-
-
-
-
 stack* peek()
 {
-    return curr;
+    return &curr[curr->rear-1];
 }
 
 void clear()
