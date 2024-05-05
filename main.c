@@ -168,18 +168,39 @@ int main() {
             break;
             case 'b': 
             move_F(&x);
+            MARK(maze,x,y);
+            direction = check_surroundings(maze,x,y);
+            if(direction != 'v')
+            {
+                CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                direction = check_surroundings(maze,x,y);
+                printf("\n%c\n", check_surroundings(maze,x,y));
+                if(direction != 'v')
+                {
+                    BJPI(maze, &x, &y, rows, cols, direction);
+                    direction = check_surroundings(maze,x,y);
+                }
+            }
+            break;
+            case 'f':
+            move_B(&x);
             if(check_surroundings(maze,x,y) != 'v')
             {
                 CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
                 printf("\n%c\n", check_surroundings(maze,x,y));
+                printf("\n%d %d\n", x, y);
+
                 if(check_surroundings(maze,x,y) != 'v')
                 {
+                    printf("\n%d %d\n", x, y);
                     BJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                    printf("\n%c\n", check_surroundings(maze,x,y));
+                    printf("\n%d %d\n", x, y);
                 }
             }
             break;
-        }
-        break;
+            
+        }        
     }
 
     for (int i = 0; i < rows; i++) {
