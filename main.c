@@ -159,15 +159,6 @@ int main() {
         {
             case 'v': 
             current = BACKTRACK(&x, &y);
-            if(current == NULL)
-            {
-                exit(1);
-            }
-            else
-    {
-        x = current->x;
-        y = current->y;
-    }
             break;
             case 'b': 
             move_F(&x);
