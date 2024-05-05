@@ -73,40 +73,40 @@ void printMaze(int **maze, int rows, int cols) {
 }
 
 
+//first entry
+void markStartingPoint(int **maze, int rows, int cols) 
+{
+    // Find the first empty space in the first line and mark it as the starting point
+    for (int i = 0; i < cols; i++) {
+        if (maze[0][i] == 0) {
+            maze[0][i] = 2; // Mark as starting point
+            MARK(maze, 0, i);
+        }
+    }
+}
+
+//check the surrouding
+
+
 int main() {
     int **maze;
     int rows, cols;
     char filename[100]; // Maximum filename length
 
-
-
     printf("Enter the name of the maze file: ");
     fgets(filename, sizeof(filename), stdin);
     filename[strcspn(filename, "\n")] = '\0'; // Remove newline character if present
 
-
     // // Copy maze from file
     copyMazeFromFile(&maze, &rows, &cols, filename);
+    stack* position = create_stack(100, rows, cols);
 
-    MARK(maze, 0, 4);
-    printf("\n %d \n", maze[0][4]);
+    //init position
+    markStartingPoint(maze, rows, cols);
 
-        int i = 0;
-        int j = 4;
-        int* po = &i;
-        int* p = &j;
-        move_F(po);   
-        MARK(maze, i, j); 
-        printf("\n %d, %d, %d \n", i, j, maze[i][j]);
-        printf("\n the space toward left %d \n\n", CWL(maze, i, j));
-        printf("\n the space toward right %d \n\n", CWR(maze, i, j, cols));
-        printf("\n the space toward Front %d \n\n", CWF(maze, i, j));
-        printf("\n the space toward Back %d \n\n", CWB(maze, i, j, rows));
-        int *p1 = &i;
-        int *p2 = &j;
-        CJPI(maze, p1, p2, rows, cols,'b');
-        printf("\n the space toward new Back %d %d \n\n", i, j);
-//        BJPI(maze, p1, p2, rows, cols,'b');
+
+
+
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -120,7 +120,7 @@ int main() {
     printf("Rows: %d, Columns: %d\n", rows, cols);
     printMaze(maze, rows, cols);
 
-    //Free allocated memory
+    //Free allocated memory 
     for (int i = 0; i < rows; i++) {
     free(maze[i]);
     }
@@ -130,29 +130,3 @@ int main() {
 }
 
 
-/*
-        int size = 0;
-
-
-printf("Enter the size for your stack: ");
-    scanf("%d", &size);
-    stack* curr = create_stack(size);
-    
-    push(1, 2);
-    push(2, 3);
-    push(3, 2);
-    printf("the stack is full or not: %d\n", is_StackFull());
-    printf("the stack is empty or not: %d\n", is_StackEmpty());
-    for(int i = 0; i < size; i++)
-    {
-            printf("the value: [%d,%d]\n", curr[i].x, curr[i].y);
-    }
-    stack* d = pop();
-    for(int i = 0; i < size; i++)
-    {
-            printf("the value: [%d,%d]\n", curr[i].x, curr[i].y);
-    }
-    printf("the value: [%d,%d]\n", d->x, d->y);
-    stack* first = peek();
-    printf("the value: [%d,%d]\n", first->x, first->y);
-    */
