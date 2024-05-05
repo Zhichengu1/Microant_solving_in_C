@@ -157,7 +157,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
             while (!(is_StackFull())&& *y < max_col && maze[*x][*y+1] != 1 && maze[*x][*y+1] != 2)
             {
                 (*y)++;
-                push((*x),(*y));
+                MARK(maze,(*x),(*y));
             }
         }
         break;
@@ -167,7 +167,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
             while (!(is_StackFull()) && *x > 0 && maze[*x][*y-1] != 1 && maze[*x][*y-1] != 2)
             {
                 (*y)--;
-                push((*x),(*y));
+                MARK(maze,(*x),(*y));
             }
         }
         break;
@@ -176,7 +176,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
             while(!(is_StackFull()) && x > 0 && maze[*x-1][*y] != 1 && maze[*x-1][*y] != 2)
             {
                 (*x)--;
-                push((*x),(*y));
+                MARK(maze,(*x),(*y));
             }
         }
         case 'b':
@@ -184,7 +184,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
             while(!(is_StackFull()) && *x < max_row && maze[*x+1][*y] != 1 && maze[*x+1][*y] != 2)
             {
                 (*x)++;
-                push((*x),(*y));
+                MARK(maze,(*x),(*y));
             }
         }
         break;
@@ -223,10 +223,7 @@ void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
             }
             break;
     }
-      if(!is_StackFull())
-      {
-        push((*x),(*y));
-        }
+    MARK(maze,(*x),(*y));
 }
 
 stack* BACKTRACK(int x, int y)
@@ -235,6 +232,11 @@ stack* BACKTRACK(int x, int y)
     while(c -> x != x && c -> y != y && !(is_StackEmpty()))
     {
         c = pop();
+    }
+    if(is_StackEmpty())
+    {
+        return NULL;
+        printf("The starting psoition is a dead end");
     }
     return c;
 }

@@ -64,6 +64,10 @@ void printMaze(int **maze, int rows, int cols) {
             else if(maze[i][j] == 2){
                 printf("x"); // Print '*' for walls
             }
+            else if(maze[i][j] == 8)
+            {
+                printf("E");
+            }
             else {
                 printf(" "); // Print ' ' for empty spaces
             }
@@ -72,25 +76,63 @@ void printMaze(int **maze, int rows, int cols) {
     }
 }
 
-
 //first entry
 void markStartingPoint(int **maze, int rows, int cols) 
 {
     // Find the first empty space in the first line and mark it as the starting point
     for (int i = 0; i < cols; i++) {
         if (maze[0][i] == 0) {
-            maze[0][i] = 2; // Mark as starting point
+        // Mark as starting point
             MARK(maze, 0, i);
         }
     }
 }
-
 //check the surrouding
+char check_surroundings(int** maze, int x, int y)
+{
+    if(CWL(maze, x, y) == 1)
+    {
+        return 'l';
+    }
+    else if (CWB(maze, x, y) == 1)
+    {
+        return 'b';
+    }
+    else if(CWF(maze, x,y) == 1)
+    {
+        return 'f';
+    }
+    else if (CWR(maze,x,y) == 1)
+    {
+        return 'r';
+    }
+    else
+    {
+        return 'v';
+    }
+}
 
+//exit
+int is_exit(int **maze, int x, int y, int max_rows, int max_cols)
+{
+    int result = 0;
+    for(int i = 0; i < max_cols; i++)
+    {
+            if(maze[max_rows-1][i] == 0)
+            {
+                maze[max_rows-1][i] = 8;
+            }
+    }
+    if(maze[x][y] != 8)
+    {
+        result = 1;
+    } 
+    return result;
+}
 
 int main() {
     int **maze;
-    int rows, cols;
+    int rows, cols, x, y;
     char filename[100]; // Maximum filename length
 
     printf("Enter the name of the maze file: ");
@@ -103,16 +145,52 @@ int main() {
 
     //init position
     markStartingPoint(maze, rows, cols);
-
-
-
-
+    x = position[0].x;
+    y = position[0].y;
+    char direction;
+    stack* current = NULL;
+    printf("coordinate: [%d,%d]\n", x, y);
+    while(is_exit(maze, x, y, rows, cols))
+    {
+        //know the next direction
+        direction = check_surroundings(maze,x,y);
+        printf("\n%c\n", direction);
+        switch(direction)
+        {
+            case 'v': 
+            current = BACKTRACK(x, y);
+            if(current == NULL)
+            {
+                exit(1);
+            }
+            x = current->x;
+            y = current->y;
+            break;
+            case 'b': 
+            move_F(&x);
+            if(check_surroundings(maze,x,y) != 'v')
+            {
+                CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                printf("\n%c\n", check_surroundings(maze,x,y));
+                if(check_surroundings(maze,x,y) != 'v')
+                {
+                    BJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
+                }
+            }
+            break;
+        }
+        break;
+    }
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
             printf(" %d ", maze[i][j]);
         }
         printf("\n");
+  }
+  for(int i = 0; i < 10; i++)
+  {
+    printf("\ncoordinate: [%d,%d]\n", position[i].x, position[i].y);
   }
    
     printf("\n\n this %c \n\n", maze[0][4]);
