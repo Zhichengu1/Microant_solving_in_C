@@ -50,7 +50,10 @@ stack* pop()
     {
         curr->rear--; // decrease the rear pointer first
         d = &curr[curr->rear]; // get the top element
-        free(&curr[curr->rear]);
+
+        // If the element is popped, change it to zero
+        curr[curr->rear].x = 0;
+        curr[curr->rear].y = 0;
     }
     else
     {
@@ -58,6 +61,7 @@ stack* pop()
     }
     return d;
 }
+
 
 stack* peek()
 {
@@ -83,9 +87,13 @@ void MARK(int** Maze, int x, int y)
         push(x,y);
         Maze[x][y] = 2;
     }
-    else
+    else if(Maze[x][y] == 2)
     {
-        printf("\ncannot enter here\n");
+        return;
+    }
+    else if(Maze[x][y] == 8)
+    {
+        push(x,y);
     }
 }
 
@@ -225,20 +233,26 @@ void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
     MARK(maze,(*x),(*y));
 }
 
-stack* BACKTRACK(int* x, int* y)
+stack* BACKTRACK()
 {
-    stack* c = peek();
-    while(c -> x != *x && c -> y != *y && !(is_StackEmpty()))
+    if(is_StackEmpty())
     {
-        c = pop();
+        printf("The stack is empty");
+        return NULL;
     }
+    
+    // Pop an element from the stack
+    stack* d = pop();
+
+    // Check if the stack is empty after popping
     if(is_StackEmpty())
     {
         printf("The starting position is a dead end");
         return NULL;
     }
-    *x = c->x;
-    *y = c->y;
+
+    // Return the top element of the stack
+    stack* c = peek();
     return c;
 }
 
