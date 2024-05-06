@@ -1,7 +1,7 @@
 //define memory storing type
 typedef struct {
     int front, rear;
-    int x, y;
+    int x, y, max;
 }stack;
 //methods
 stack* create_stack(int size, int max_r, int max_c);

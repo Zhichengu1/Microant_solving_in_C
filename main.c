@@ -166,6 +166,7 @@ int main() {
             x = previous -> x;
             y = previous -> y;
             break;
+
             case 'b': 
             move_F(&x);
             MARK(maze,x,y);
@@ -198,6 +199,7 @@ int main() {
                 }
             }
             break;
+
             case 'r': 
             move_R(&y);
             MARK(maze,x,y);
@@ -214,6 +216,7 @@ int main() {
                 }
             }
             break;
+            
             case 'l':
             move_L(&y);
             MARK(maze,x,y);
@@ -229,10 +232,10 @@ int main() {
                     direction = check_surroundings(maze,x,y);
                 }
             }
+            break;
         }  
     }
     printf("\ncoordinate: [%d,%d]\n", x, y);
-
 
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -240,7 +243,8 @@ int main() {
         }
         printf("\n");
   }
-  for(int i = 0; i <20; i++)
+
+  for(int i = 0; i < position -> max; i++)
   {
     printf("\ncoordinate: [%d,%d]\n", position[i].x, position[i].y);
   }
@@ -258,5 +262,3 @@ int main() {
 
     return 0;
 }
-
-

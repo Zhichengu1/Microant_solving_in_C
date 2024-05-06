@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "action.h"
-int max = 0;
 stack* curr;
+int maxk = 0;
 int max_row = 0;
 int max_cols = 0;
 stack* create_stack(int size, int max_r, int max_c)
@@ -13,9 +13,10 @@ stack* create_stack(int size, int max_r, int max_c)
         curr = (stack*) malloc(sizeof(stack) * size);
         curr->front = 0;
         curr->rear = 0;
-        max = size;
         max_row = max_r;
+        maxk = size;
         max_cols = max_c;
+        curr-> max = 0;
     }
     else
     {
@@ -37,6 +38,7 @@ void push(int x , int y)
         curr[curr->rear].x = x;
         curr[curr->rear].y = y;
         curr->rear++;
+       curr-> max++;
     }
     else
     {
@@ -50,7 +52,7 @@ stack* pop()
     {
         curr->rear--; // decrease the rear pointer first
         d = &curr[curr->rear]; // get the top element
-
+        curr -> max--;
         // If the element is popped, change it to zero
         curr[curr->rear].x = 0;
         curr[curr->rear].y = 0;
@@ -76,7 +78,7 @@ void clear()
 //memory
 int is_StackFull()
 {
-    return curr->rear == max ? 1 : 0; 
+    return curr->rear == maxk ? 1 : 0; 
 }
 
 //mark -> kevin
@@ -244,12 +246,6 @@ stack* BACKTRACK()
     // Pop an element from the stack
     stack* d = pop();
 
-    // Check if the stack is empty after popping
-    if(is_StackEmpty())
-    {
-        printf("The starting position is a dead end");
-        return NULL;
-    }
 
     // Return the top element of the stack
     stack* c = peek();
