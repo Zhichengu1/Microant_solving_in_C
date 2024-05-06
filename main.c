@@ -1,9 +1,155 @@
+//Group memebers: Jiacheng Liang ID: 115886650, Zhicheng ID: 115690503, Kevin Zheng ID: 115748800
 #include <stdlib.h>
 #include <stdio.h>
 #include "stack.h"
 #include <stdlib.h>
 #include <string.h>
 #include "action.h"
+
+//define each actions
+typedef enum {
+    MARK_,
+    MOVE_F_,
+    MOVE_B_,
+    MOVE_L_,
+    MOVE_R_,
+    CWL_,
+    CWR_,
+    CWF_,
+    CWB_,
+    PUSH_,
+    POP_,
+    PEEK_,
+    CLEAR_,
+    BJPI_,
+    CJPI_,
+    BACKTRACK_,
+    RP_,
+    markStartingPoint_,
+    check_surroundings_,
+} ActionType;
+
+//execute actions from the intelligence file
+void executeAction(ActionType type) {
+    switch (type) {
+        case markStartingPoint_:
+            printf("Mark starting position\n");
+            break;
+        case MARK_:
+            printf("Action: MARK\n");
+            break;
+        case MOVE_F_:
+            printf("Action: MOVE_F\n");
+            break;
+        case MOVE_B_:
+            printf("Action: MOVE_B\n");
+            break;
+        case MOVE_L_:
+            printf("Action: MOVE_L\n");
+            break;
+        case MOVE_R_:
+            printf("Action: MOVE_R\n");
+            break;
+        case CWL_:
+            printf("Action: CWL\n");
+            break;
+        case CWR_:
+            printf("Action: CWR\n");
+            break;
+        case CWF_:
+            printf("Action: CWF\n");
+            break;
+        case CWB_:
+            printf("Action: CWB\n");
+            break;
+        case PUSH_:
+            printf("Action: PUSH\n");
+            break;
+        case POP_:
+            printf("Action: POP\n");
+            break;
+        case PEEK_:
+            printf("Action: PEEK\n");
+            break;
+        case CLEAR_:
+            printf("Action: CLEAR\n");
+            break;
+        case BJPI_:
+            printf("Action: BJPI\n");
+            break;
+        case CJPI_:
+            printf("Action: CJPI\n");
+            break;
+        case BACKTRACK_:
+            printf("Action: BACKTRACK\n");
+            break;
+        case RP_:
+            printf("Action: RP\n");
+            break;
+        case check_surroundings_:
+            printf("Action: check surroundings\n");
+            break;
+        default:
+            printf("Unknown action type\n");
+            break;
+    }
+}
+
+//Perform actions from the file.
+void performActionsFromFile() {
+    FILE *file = fopen("intelligence.txt", "r");
+    if (file == NULL) {
+        printf("Error: Unable to open intelligence file.\n");
+        return;
+    }
+    char line[256];
+    while (fgets(line, sizeof(line), file) != NULL) {
+        // Remove trailing newline character
+        line[strcspn(line, "\n")] = '\0';
+        
+        ActionType type;
+        if (strcmp(line, "MARK") == 0)
+            type = MARK_;
+        else if (strcmp(line, "MOVE_F") == 0)
+            type = MOVE_F_;
+        else if (strcmp(line, "MOVE_B") == 0)
+            type = MOVE_B_;
+        else if (strcmp(line, "MOVE_L") == 0)
+            type = MOVE_L_;
+        else if (strcmp(line, "MOVE_R") == 0)
+            type = MOVE_R_;
+        else if (strcmp(line, "CWL") == 0)
+            type = CWL_;
+        else if (strcmp(line, "CWR") == 0)
+            type = CWR_;
+        else if (strcmp(line, "CWF") == 0)
+            type = CWF_;
+        else if (strcmp(line, "CWB") == 0)
+            type = CWB_;
+        else if (strcmp(line, "PUSH") == 0)
+            type = PUSH_;
+        else if (strcmp(line, "POP") == 0)
+            type = POP_;
+        else if (strcmp(line, "PEEK") == 0)
+            type = PEEK_;
+        else if (strcmp(line, "CLEAR") == 0)
+            type = CLEAR_;
+        else if (strcmp(line, "BJPI") == 0)
+            type = BJPI_;
+        else if (strcmp(line, "CJPI") == 0)
+            type = CJPI_;
+        else if (strcmp(line, "BACKTRACK") == 0)
+            type = BACKTRACK_;
+        else if (strcmp(line, "RP") == 0)
+            type = RP_;
+        else if (strcmp(line, "markStartingPoint") == 0)
+            type = markStartingPoint_;
+        else if (strcmp(line, "checkSurrounding") == 0)
+            type = check_surroundings_;
+        executeAction(type);
+    }
+    fclose(file);
+}
 
 
 void copyMazeFromFile(int ***maze, int *rows, int *cols, char *filename) {
@@ -53,7 +199,7 @@ void copyMazeFromFile(int ***maze, int *rows, int *cols, char *filename) {
     fclose(file);
 }
 
-
+//Printing the maze
 void printMaze(int **maze, int rows, int cols) {
     printf("Maze:\n");
     for (int i = 0; i < rows; i++) {
@@ -66,7 +212,7 @@ void printMaze(int **maze, int rows, int cols) {
             }
             else if(maze[i][j] == 8)
             {
-                printf("E");
+                printf("E");// print 'E' for exit
             }
             else {
                 printf(" "); // Print ' ' for empty spaces
@@ -151,7 +297,8 @@ int main() {
     stack* current = NULL;
     stack* previous = NULL;
     printf("coordinate: [%d,%d]\n", x, y);
-
+    printf("Performing actions from the intelligence file:\n");
+    performActionsFromFile();
     while(is_exit(maze, x, y, rows, cols) != 0)
     {
         //know the next direction
