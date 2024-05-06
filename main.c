@@ -127,7 +127,6 @@ int is_exit(int **maze, int x, int y, int max_rows, int max_cols)
     {
         result = 1;
     } 
-    MARK(maze, x, y);
     return result;
 }
 
@@ -152,17 +151,20 @@ int main() {
     stack* current = NULL;
     stack* previous = NULL;
     printf("coordinate: [%d,%d]\n", x, y);
-    int i = 0;
+
     while(is_exit(maze, x, y, rows, cols) != 0)
     {
         //know the next direction
         direction = check_surroundings(maze,x,y);
-        printf("\n%c\n", direction);
         switch(direction)
         {
             case 'v': 
             previous = BACKTRACK();
             printf("\n[%d,%d]\n", previous -> x, previous -> y);
+            if (previous == NULL) {
+            printf("Error: Stack is empty, cannot backtrack.\n");
+            break;
+            }
             x = previous -> x;
             y = previous -> y;
             break;
@@ -170,32 +172,38 @@ int main() {
             case 'b': 
             move_F(&x);
             MARK(maze,x,y);
+            printf("\n[%d,%d]\n", x, y);
             direction = check_surroundings(maze,x,y);
             if(direction == 'b')
             {
+                if(x < rows && y> cols )
+                {
                 CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
                 direction = check_surroundings(maze,x,y);
-                printf("\n%c\n", check_surroundings(maze,x,y));
                 if(direction == 'b')
                 {
                     BJPI(maze, &x, &y, rows, cols, direction);
                     direction = check_surroundings(maze,x,y);
                 }
+                }
             }
             break;
+            
             case 'f':
             move_B(&x);
             MARK(maze,x,y);
             direction = check_surroundings(maze,x,y);
             if(direction == 'f')
             {
+                if(x < rows && y> cols )
+                {
                 CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
                 direction = check_surroundings(maze,x,y);
-                printf("\n%c\n", check_surroundings(maze,x,y));
                 if(direction == 'f')
                 {
                     BJPI(maze, &x, &y, rows, cols, direction);
                     direction = check_surroundings(maze,x,y);
+                }
                 }
             }
             break;
@@ -206,35 +214,40 @@ int main() {
             direction = check_surroundings(maze,x,y);
             if(direction == 'r')
             {
+                if(x < rows && y> cols )
+                {
                 CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
                 direction = check_surroundings(maze,x,y);
-                printf("\n%c\n", check_surroundings(maze,x,y));
                 if(direction == 'r')
                 {
                     BJPI(maze, &x, &y, rows, cols, direction);
                     direction = check_surroundings(maze,x,y);
                 }
+                }
             }
             break;
-
+            
             case 'l':
             move_L(&y);
             MARK(maze,x,y);
             direction = check_surroundings(maze,x,y);
             if(direction == 'l')
             {
+                if(x < rows && y> cols )
+                {
                 CJPI(maze, &x, &y, rows, cols, check_surroundings(maze,x,y));
                 direction = check_surroundings(maze,x,y);
-                printf("\n%c\n", check_surroundings(maze,x,y));
                 if(direction == 'l')
                 {
                     BJPI(maze, &x, &y, rows, cols, direction);
                     direction = check_surroundings(maze,x,y);
                 }
+                }
             }
             break;
         }  
     }
+
     printf("\ncoordinate: [%d,%d]\n", x, y);
 
     for (int i = 0; i < rows; i++) {

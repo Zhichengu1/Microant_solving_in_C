@@ -81,7 +81,7 @@ int is_StackFull()
     return curr->rear == maxk ? 1 : 0; 
 }
 
-//mark -> kevin
+//mark -
 void MARK(int** Maze, int x, int y) 
 {
     if (Maze[x][y] == 0)
@@ -152,11 +152,7 @@ int CWB(int** maze, int x, int y)
     return x < max_row && maze[x+1][y] != 1 && maze[x+1][y] != 2 ? 1 : 0;
 }
 
-
-
-
-
-//current position is free
+//you check one direction until it reaches the wall
 void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
 {
     switch(direction)
@@ -182,7 +178,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
         break;
         case 'f': 
         {
-            while(!(is_StackFull()) && x > 0 && maze[*x-1][*y] != 1 && maze[*x-1][*y] != 2)
+            while(!(is_StackFull()) && *x > 0 && maze[*x-1][*y] != 1 && maze[*x-1][*y] != 2)
             {
                 (*x)--;
                 MARK(maze,(*x),(*y));
@@ -245,8 +241,6 @@ stack* BACKTRACK()
     
     // Pop an element from the stack
     stack* d = pop();
-
-
     // Return the top element of the stack
     stack* c = peek();
     return c;
