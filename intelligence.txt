@@ -1,0 +1,45 @@
+MARK
+PU  push
+CS check_surrounding -> d
+MD move to direction d "Char d"
+check_surroundings -> d
+CJPI
+check_surrounding -> f new direction
+p= past direction d
+d = new direction check_surrounding CJPI
+d = p 
+BJPI
+
+BJPI
+MARK
+MOVE_d
+CWR
+BJPI
+MOVE_L
+CWL
+BJPI
+MARK
+MOVE_F
+CWR
+BJPI
+MOVE_B
+CWL
+BJPI
+MOVE_L
+CWL
+BJPI
+MOVE_B
+CWL
+BJPI
+MOVE_L
+CWL
+BJPI
+PUSH
+MOVE_R
+CWF
+BJPI
+MOVE_R
+CWF
+BJPI
+
+

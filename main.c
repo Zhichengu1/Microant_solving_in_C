@@ -216,7 +216,7 @@ int main() {
                 }
             }
             break;
-            
+
             case 'l':
             move_L(&y);
             MARK(maze,x,y);
