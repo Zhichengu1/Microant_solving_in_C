@@ -195,7 +195,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
         break;
     }
 }
-
+//CJPI move only one position at a time if it is the same direction
 void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
 {
     switch(direction)
@@ -231,6 +231,7 @@ void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
     MARK(maze,(*x),(*y));
 }
 
+//backtrack: pop and then peek
 stack* BACKTRACK()
 {
     if(is_StackEmpty())
@@ -246,7 +247,7 @@ stack* BACKTRACK()
     return c;
 }
 
-
+//repeat function
 void repeat_function(int n, void (*f)())
 {
     for(int i = 0; i < n; i++)

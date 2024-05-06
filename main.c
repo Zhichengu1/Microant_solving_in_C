@@ -1,4 +1,107 @@
-//Group memebers: Jiacheng Liang ID: 115886650, Zhicheng ID: 115690503, Kevin Zheng ID: 115748800
+/* 
+Group memebers: Jiacheng Liang ID: 115886650, Zhicheng ID: 115690503, Kevin Zheng ID: 115748800
+read the intelligence.txt file with function operations, perform the touching wall algorithum until it reaches the end. 
+This was finished at MAY 5, all of the function have been correctly displayed
+
+sample output: 
+Enter the name of the maze file: maze1.txt
+coordinate: [0,4]
+Performing actions from the intelligence file:
+Mark starting position
+Action: MARK
+Action: check surroundings
+Action: MOVE_R
+Action: CWR
+Action: BJPI
+Action: check surroundings
+Action: MOVE_L
+Action: CWL
+Action: BJPI
+Action: check surroundings
+Action: MARK
+Action: MOVE_F
+Action: CWR
+Action: BJPI
+Action: MARK
+Action: check surroundings
+Action: MOVE_B
+Action: CWL
+Action: check surroundings
+Action: BJPI
+Action: MOVE_L
+
+[1,4]
+
+[2,4]
+
+[3,4]
+
+[4,4]
+
+[5,3]
+
+[6,3]
+
+[7,4]
+
+[8,4]
+
+[9,4]
+
+coordinate: [9,2]
+ 1  1  1  1  2  1  1  1  1  1 
+ 1  1  1  1  2  1  0  1  0  1 
+ 1  1  0  1  2  0  1  1  0  1 
+ 1  0  1  1  2  1  1  0  0  1 
+ 1  1  1  2  2  1  0  1  0  1 
+ 1  1  1  2  1  0  1  1  1  1 
+ 1  0  1  2  2  0  1  1  1  1 
+ 1  0  1  1  2  0  1  1  1  1 
+ 1  1  1  1  2  0  0  1  1  1 
+ 1  0  2  2  2  0  0  0  0  1 
+ 1  1  8  1  1  8  1  1  1  1 
+
+coordinate: [0,4]
+
+coordinate: [1,4]
+
+coordinate: [2,4]
+
+coordinate: [3,4]
+
+coordinate: [4,4]
+
+coordinate: [4,3]
+
+coordinate: [5,3]
+
+coordinate: [6,3]
+
+coordinate: [6,4]
+
+coordinate: [7,4]
+
+coordinate: [8,4]
+
+coordinate: [9,4]
+
+coordinate: [9,3]
+
+coordinate: [9,2]
+Rows: 11, Columns: 10
+Maze:
+****x*****
+****x* * *
+** *x ** *
+* **x**  *
+***xx* * *
+***x* ****
+* *xx ****
+* **x ****
+****x  ***
+* xxx    *
+**E**E****
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include "stack.h"
@@ -94,7 +197,6 @@ void executeAction(ActionType type) {
             break;
     }
 }
-
 //Perform actions from the file.
 void performActionsFromFile() {
     FILE *file = fopen("intelligence.txt", "r");
@@ -150,7 +252,6 @@ void performActionsFromFile() {
     }
     fclose(file);
 }
-
 
 void copyMazeFromFile(int ***maze, int *rows, int *cols, char *filename) {
     FILE *file = fopen(filename, "r");
@@ -233,32 +334,33 @@ void markStartingPoint(int **maze, int rows, int cols)
         }
     }
 }
-//check the surrouding
+
+//check the surrouding return type with char as direction
 char check_surroundings(int** maze, int x, int y)
 {
     if(CWL(maze, x, y) == 1)
     {
-        return 'l';
+        return 'l'; //left
     }
     else if (CWB(maze, x, y) == 1)
     {
-        return 'b';
+        return 'b'; //front
     }
     else if(CWF(maze, x,y) == 1)
     {
-        return 'f';
+        return 'f'; //back
     }
     else if (CWR(maze,x,y) == 1)
     {
-        return 'r';
+        return 'r'; //right
     }
     else
     {
-        return 'v';
+        return 'v'; //stuck
     }
 }
 
-//exit
+//exit point 
 int is_exit(int **maze, int x, int y, int max_rows, int max_cols)
 {
     int result = 0;
@@ -299,12 +401,14 @@ int main() {
     printf("coordinate: [%d,%d]\n", x, y);
     printf("Performing actions from the intelligence file:\n");
     performActionsFromFile();
+    //loop until it find the exit
     while(is_exit(maze, x, y, rows, cols) != 0)
     {
         //know the next direction
         direction = check_surroundings(maze,x,y);
         switch(direction)
         {
+            // stuck
             case 'v': 
             previous = BACKTRACK();
             printf("\n[%d,%d]\n", previous -> x, previous -> y);
@@ -315,13 +419,13 @@ int main() {
             x = previous -> x;
             y = previous -> y;
             break;
-
+            //move front
             case 'b': 
             move_F(&x);
             MARK(maze,x,y);
             printf("\n[%d,%d]\n", x, y);
             direction = check_surroundings(maze,x,y);
-            if(direction == 'b')
+            if(direction == 'b') //if same direction
             {
                 if(x < rows && y> cols )
                 {
@@ -335,12 +439,12 @@ int main() {
                 }
             }
             break;
-            
+            //move back
             case 'f':
             move_B(&x);
             MARK(maze,x,y);
             direction = check_surroundings(maze,x,y);
-            if(direction == 'f')
+            if(direction == 'f') //if same direction call CJPI and BJPI
             {
                 if(x < rows && y> cols )
                 {
@@ -354,7 +458,7 @@ int main() {
                 }
             }
             break;
-
+            //move right
             case 'r': 
             move_R(&y);
             MARK(maze,x,y);
@@ -373,7 +477,7 @@ int main() {
                 }
             }
             break;
-            
+            //move left
             case 'l':
             move_L(&y);
             MARK(maze,x,y);
@@ -394,7 +498,6 @@ int main() {
             break;
         }  
     }
-
     printf("\ncoordinate: [%d,%d]\n", x, y);
 
     for (int i = 0; i < rows; i++) {
@@ -409,7 +512,6 @@ int main() {
     printf("\ncoordinate: [%d,%d]\n", position[i].x, position[i].y);
   }
    
-    printf("\n\n this %c \n\n", maze[0][4]);
     // // Print the maze
     printf("Rows: %d, Columns: %d\n", rows, cols);
     printMaze(maze, rows, cols);
