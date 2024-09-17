@@ -2,10 +2,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "action.h"
+
 stack* curr;
 int maxk = 0;
 int max_row = 0;
 int max_cols = 0;
+
 stack* create_stack(int size, int max_r, int max_c)
 {
     if(size > 0)
@@ -38,13 +40,14 @@ void push(int x , int y)
         curr[curr->rear].x = x;
         curr[curr->rear].y = y;
         curr->rear++;
-       curr-> max++;
+        curr-> max++;
     }
     else
     {
         printf("the stack is currently full");
     }
 }
+
 stack* pop()
 {
     stack* d = NULL;
@@ -195,6 +198,7 @@ void BJPI(int** maze, int* x, int* y, int max_row, int max_col, char direction)
         break;
     }
 }
+
 //CJPI move only one position at a time if it is the same direction
 void CJPI(int** maze, int* x, int* y,int max_row, int max_col, char direction)
 {

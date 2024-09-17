@@ -267,6 +267,7 @@ int is_exit(int **maze, int x, int y, int max_rows, int max_cols)
                 maze[max_rows-1][i] = 8;
             }
     }
+
     if(maze[x+1][y] != 8)
     {
         result = 1;
@@ -394,6 +395,7 @@ int main() {
             break;
         }  
     }
+    
     printf("\ncoordinate: [%d,%d]\n", x, y);
 
     for (int i = 0; i < rows; i++) {
