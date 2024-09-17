@@ -12,5 +12,6 @@ Each stack element can store the current physical position of the ant inside the
 
 To avoid linker issue compile the following commands:
 gcc main.c action.c -o main
+
 ./main
 
