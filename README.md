@@ -2,7 +2,7 @@
 
 - action.c file: "Contains all the actions that an ant can take."
 - action.h file: "methods initialization".
-- intelligence.txt file: "a generic maze exit method".
+- intelligence.txt file: "a generic maze exit file".
 - main.c file: "main program"
 - memory.c file: "keep track of the steps that the ant take."
 - ECE Course Project
