@@ -1,4 +1,4 @@
-(Virtual Ant) – ECE Course Project
+(Virtual Ant): ECE Course Project
   [the best exit method alternative](https://algo.monster/liteproblems/1926)
 
 - action.c file: "Contains all the actions that an ant can take."
